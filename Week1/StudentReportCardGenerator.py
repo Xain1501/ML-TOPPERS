@@ -20,7 +20,6 @@
 # Grade: A
 # • Read and Display the Report Card
 
-
 def CalAvg(marks):
   Total=0
   for i in marks.values():
@@ -29,7 +28,7 @@ def CalAvg(marks):
   Avg= Total/len(marks)
   return Avg
 
-def CalGrade():
+def CalGrade(Avg):
   if Avg>=80:
     Grade='A'
   elif Avg>=60:
@@ -41,25 +40,24 @@ def CalGrade():
   return Grade
 
 
-def WriteReport(name,age,Grade,Avg,marks):
-  fd=open("report.txt","a")
-  fd.write("Name:" + name)
-  fd.write("Age" + str(age))
-  fd.write("Grade" + Grade)
-  fd.write("Average" + str(Avg))
-  for sub, mark in marks.items:
-   fd.write(f"{sub}: {mark}\n")
+def WriteReport(name, age, Grade, Avg, marks):
+    with open("report.txt", "a") as fd:
+        fd.write("Name: " + name + "\n")
+        fd.write("Age: " + str(age) + "\n")
+        fd.write("Grade: " + Grade + "\n")
+        fd.write("Average: " + str(Avg) + "\n")
 
-  fd.write("\n\n")
+        for sub, mark in marks.items():
+            
+            fd.write(f"{sub}: {mark}\n")
 
-  
+        fd.write("\n\n") 
 
 def ReadReport():
-  fd= open("report.txt","r")
-  for line in fd:
-    print(line.strip())
+    with open("report.txt", "r") as fd:
+        for line in fd:
+            print(line.strip())
     fd.close()
-
 
 name= input("Enter Your Name: ")
 age= int(input("Enter Your Age: "))
@@ -75,17 +73,13 @@ Grade =CalGrade(Avg)
 WriteReport(name,age,Grade,Avg,marks)
 ReadReport()
 
-
+print("Bonus Marks work here")
 ask= lambda: input("Do you want to give bonus marks? (y/n): ")
 Bonus=ask()
 
-if Bonus=='y':
-  for key,val in marks:
-    marks[key]= val+5
-
-
-
+if Bonus.lower()=='y':
+  for key in marks:
+    marks[key]+=5
 
 Avg= CalAvg(marks)
 Grade =CalGrade(Avg)
-
