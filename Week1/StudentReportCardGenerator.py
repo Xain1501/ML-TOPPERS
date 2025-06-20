@@ -1,85 +1,116 @@
-# MIni PROJECT 1
-# requirements:
-# • Take Input from the User (name and age)
-# • Take Input For 3 Subjects in a dictionary subject:marks (english, math, urdu)
-# • Define a Function to Calculate Average of all subjects together
-# • Grade Assignment using if/elif/else
+# You are required to implement a in Python using Object-Oriented
+# Programming (OOP) principles.
+
+# Student Report Card Generator
+
+# Problem:
+# Write a Python program using a class called to manage a student's academic
+# performance. The program must:
+
+# Student
+
+# Part A — Class Implementation
+# 1. Create a class Student with the following:
+# • Attributes: name , age , and grades (a dictionary to store subject → marks)
+# • Method add_grade(subject, marks) to add a subject and its marks to the dictionary
+# • Method calculate_average() to compute the average of all subject marks
+# • Method assign_grade() to return the letter grade based on average:
 # Average Score Grade
-# 80 or above A
+# 80 and above A
 # 60 to 79 B
 # 40 to 59 C
 # Below 40 F
-# • Bonus give using lambda function (Ask the user: Add 5 bonus marks to all subjects? (yes/no))
-# • Write the Report to a File
-# Name: Ali
-# Age: 20
-# Math: 90
-# English: 83
-# Urdu: 95
-# Average: 89.33
-# Grade: A
-# • Read and Display the Report Card
 
-def CalAvg(marks):
-  Total=0
-  for i in marks.values():
-    Total+= i
+# 2. Add a method that applies a lambda function to increase all subject
+# marks (max 100).
+
+# apply_bonus(lambda_func)
+
+# 3. Add methods to:
+# • generate_report() to return a formatted report string.
+# • save_to_file(filename) to save the report to a .txt file.
+# • A @staticmethod load_from_file(filename) to read and display the report.
+# Part B — Program Flow
+# 1. Prompt the user to enter the student’s name and age .
+# 2. Take marks input for 3 subjects: Math, English, and Urdu.
+# 3. Ask the user:
+# Do you want to apply 5 bonus marks to all subjects? (yes/no)
+# If yes, use a lambda function to apply the bonus
+
+# Part C — File Handling & Output
+# 1. Save the report to a file named <name>_report.txt
+# 2. Read from the file and display the report in the console.
+# Example Output:
+
+# Enter student's name: Ali Enter age: 20 Enter marks for Math: 90 Enter marks for English:
+# 83 Enter marks for Urdu: 95 Add 5 bonus marks to all subjects? yes Report saved successfu
+# lly! Report Card: Name: Ali Age: 20 Math: 95 English: 88 Urdu: 100 Average: 94.33 Grade:
+
+
+
+
+
+
+
+lambda_func = lambda x: x + 5
+
+class Student:
+  def __init__(self, name, age):
+    self.name = name
+    self.age = age
+    self.marks = {}
+
+  def CalAvg(self):
+    Total=0
+    for i in self.marks.values():
+      Total+= i
+    
+    Avg= Total/len(self.marks)
+    return Avg
   
-  Avg= Total/len(marks)
-  return Avg
+  def CalGrade(Avg):
+    if Avg>=80:
+      Grade='A'
+    elif Avg>=60:
+      Grade='B'
+    elif Avg>=40:
+      Grade='C'
+    else:
+      Grade ='F'
+    return Grade
+  
+  def AddGrade(self, subject, marks):
+      self.marks[subject] = marks
+  
+  def ApplyBonus(self, lambda_func):
+    for subject in self.marks:
+      self.marks[subject] = min(100, lambda_func(self.marks[subject]))
 
-def CalGrade(Avg):
-  if Avg>=80:
-    Grade='A'
-  elif Avg>=60:
-    Grade='B'
-  elif Avg>=40:
-    Grade='C'
-  else:
-    Grade ='F'
-  return Grade
+  def GenRep(self):
+    report = "Name: {self.name} Age: {self.age}\n"
+    for subject, marks in self.marks.items():
+      report += f"{subject}: {marks}\n"
+    avg = self.CalAvg()
+    report += f"Average: {avg:}\nGrade: {self.CalGrade(avg)}"
+    return report
 
 
-def WriteReport(name, age, Grade, Avg, marks):
-    with open("report.txt", "a") as fd:
-        fd.write("Name: " + name + "\n")
-        fd.write("Age: " + str(age) + "\n")
-        fd.write("Grade: " + Grade + "\n")
-        fd.write("Average: " + str(Avg) + "\n")
 
-        for sub, mark in marks.items():
-            
-            fd.write(f"{sub}: {mark}\n")
 
-        fd.write("\n\n") 
 
-def ReadReport():
-    with open("report.txt", "r") as fd:
-        for line in fd:
-            print(line.strip())
-    fd.close()
+
+
+
+
+
 
 name= input("Enter Your Name: ")
 age= int(input("Enter Your Age: "))
-marks={}
 subs=["English","Math","Urdu"]
+student = Student(name, age)
 
-for key in subs:
-  mark=float(input("Enter marks: "))
-  marks[key]= mark
-
-Avg= CalAvg(marks)
-Grade =CalGrade(Avg)
-WriteReport(name,age,Grade,Avg,marks)
-ReadReport()
-
-print("Bonus Marks work here")
-ask= lambda: input("Do you want to give bonus marks? (y/n): ")
-Bonus=ask()
-
-if Bonus.lower()=='y':
-  for key in marks:
-    marks[key]+=5
-
-Avg= CalAvg(marks)
-Grade =CalGrade(Avg)
+for i in subs:
+ subject = input(f"Enter marks for {i}: ")
+ marks = int(input(f"Enter marks for {i}: "))
+ student.add_grade(subject, marks)
+ avg = student.CalAvg()
